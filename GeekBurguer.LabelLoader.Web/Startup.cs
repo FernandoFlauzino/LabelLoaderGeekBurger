@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GeekBurguer.LabelLoader.Web.Application.Interface;
 using GeekBurguer.LabelLoader.Web.Application.Interface.Api;
+using GeekBurguer.LabelLoader.Web.Application.Service;
 using GeekBurguer.LabelLoader.Web.Infra.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +30,7 @@ namespace GeekBurguer.LabelLoader.Web
                 });
             });
             services.AddScoped<IIngredientsRepository, IngredientsRepository>();
+            services.AddScoped<ILabelLoaderService, LabelLoaderService>();
 
         }
 
