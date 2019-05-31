@@ -8,6 +8,6 @@ namespace GeekBurguer.LabelLoader.Web.Application.Interface
 {
     public interface ILabelLoaderService
     {
-        Task<CreateIngredientsRequest> ReadImageVisonService();
+        Task<bool> ReadImageVisonService();
     }
 }
