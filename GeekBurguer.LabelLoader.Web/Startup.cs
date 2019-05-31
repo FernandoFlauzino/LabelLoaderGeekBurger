@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using GeekBurguer.LabelLoader.Web.Application.Interface;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace GeekBurguer.LabelLoader.Web
@@ -25,10 +27,12 @@ namespace GeekBurguer.LabelLoader.Web
             {
                 c.SwaggerDoc("v1", new Info
                 {
-                    Title = "Label Loader",
+                    Title = "GeekBurger LabelLoader",
                     Version = "v1"
                 });
             });
+            services.AddDirectoryBrowser();
+
             services.AddScoped<IIngredientsRepository, IngredientsRepository>();
             services.AddScoped<ILabelLoaderService, LabelLoaderService>();
 
@@ -41,6 +45,21 @@ namespace GeekBurguer.LabelLoader.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseStaticFiles(); // For the wwwroot folder
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images"))
+            });
+
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images"))
+            });
+
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>

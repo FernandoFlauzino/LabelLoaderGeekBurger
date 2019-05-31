@@ -1,4 +1,5 @@
 ﻿using GeekBurguer.LabelLoader.Web.Application.Interface;
+using GeekBurguer.LabelLoader.Web.Application.Interface.Api;
 using GeekBurguer.LabelLoader.Web.Application.Request.Api;
 using Microsoft.Extensions.Configuration;
 using Microsoft.ProjectOxford.Vision;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 namespace GeekBurguer.LabelLoader.Web.Application.Service
 {
     public class LabelLoaderService : ILabelLoaderService
-    {     
+    {
         public static string[] blacklist = new string[]
          {
              "ingredients",
@@ -26,23 +27,25 @@ namespace GeekBurguer.LabelLoader.Web.Application.Service
         public const string CommaWithSpace = " , ";
         private const string Exit = "exit";
         private readonly IConfiguration _configuration;
+        private readonly IIngredientsRepository _ingredientsRepository;
 
-        public LabelLoaderService(IConfiguration configuration)
+        public LabelLoaderService(IConfiguration configuration,
+            IIngredientsRepository ingredientsRepository)
         {
             _configuration = configuration;
+            _ingredientsRepository = ingredientsRepository;
         }
 
-        public Task<CreateIngredientsRequest> ReadImageVisonService()
+        public async Task<bool> ReadImageVisonService()
         {
-            var templateImage = @"labels\{0}.jpg";
-            var imageFilePath = "";
+
+            var templateImage = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", "hamburger.jpg");
+
             OcrResults results;
 
             var visionServiceClient = new VisionServiceClient(_configuration["VisionAPIKey"], _configuration["VisionUrl"]);
 
-            imageFilePath = templateImage;
-         
-            using (Stream imageFileStream = File.OpenRead(imageFilePath))
+            using (Stream imageFileStream = File.OpenRead(templateImage))
             {
                 results = visionServiceClient.RecognizeTextAsync(imageFileStream).Result;
             }
@@ -51,8 +54,8 @@ namespace GeekBurguer.LabelLoader.Web.Application.Service
             var words = lines.SelectMany(line => line.Words);
             var wordsText = words.Select(word => word.Text.ToUpper());
 
-            var wordsJoint = 
-                string.Join(' ', wordsText).Replace(AndWithSpace, CommaWithSpace,StringComparison.InvariantCultureIgnoreCase);
+            var wordsJoint =
+                string.Join(' ', wordsText).Replace(AndWithSpace, CommaWithSpace, StringComparison.InvariantCultureIgnoreCase);
 
             foreach (var item in blacklist)
             {
@@ -62,7 +65,7 @@ namespace GeekBurguer.LabelLoader.Web.Application.Service
 
             var wordsSplitByComma = wordsJoint.Split(',').ToList();
 
-            var ingredients = new CreateIngredientsRequest
+            var request = new CreateIngredientsRequest
             {
                 ItemName = "Item Name"
             };
@@ -73,10 +76,19 @@ namespace GeekBurguer.LabelLoader.Web.Application.Service
             {
                 var text = wordText.Trim();
                 if (!String.IsNullOrWhiteSpace(text))
-                    ingredients.Ingredients.Add(text);
-            });
+                    request.Ingredients.Add(text);
+            });
 
-            return Task.FromResult(ingredients);
+            //chamar a api que vai inserir os igredientes
+            var result = await _ingredientsRepository.CreateIngredients(request);
+
+            if (result)
+            {
+                //TODO: incluir tratamento para renomear o arquivo
+            }
+
+            return await Task.FromResult(result);
+
         }
     }
 }
