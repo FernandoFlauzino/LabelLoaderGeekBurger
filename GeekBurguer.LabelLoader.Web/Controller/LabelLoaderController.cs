@@ -26,8 +26,8 @@ namespace GeekBurguer.LabelLoader.Web.Controller
         {
             try
             {
-                _labelLoaderService.ReadImageVisonService();
-                return Ok();
+                var result = _labelLoaderService.ReadImageVisonService().Result;
+                return Ok(result);
             }
             catch(Exception ex)
             {
