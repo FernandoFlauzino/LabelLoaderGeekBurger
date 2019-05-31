@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "da54cc404758292ed4dd0bfb093c6774eed2c254"
+    "signature": "e4b6340679911a9776b12b386f223d28dae6d115"
   },
   "compilationOptions": {
     "defines": [
@@ -26,6 +26,7 @@
         "dependencies": {
           "AutoMapper": "8.1.0",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "6.1.0",
+          "GeekBurger.Ingredients.Contract": "1.0.0",
           "Microsoft.AspNetCore.All": "2.0.8",
           "Microsoft.NETCore.App": "2.2.0",
           "Microsoft.ProjectOxford.Vision.DotNetCore": "1.1.0",
@@ -67,6 +68,17 @@
         },
         "compile": {
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
+        }
+      },
+      "GeekBurger.Ingredients.Contract/1.0.0": {
+        "runtime": {
+          "lib/netcoreapp2.2/GeekBurger.Ingredients.Contract.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp2.2/GeekBurger.Ingredients.Contract.dll": {}
         }
       },
       "Libuv/1.10.0": {
@@ -4926,6 +4938,13 @@
       "sha512": "sha512-KjuQqNFqE0GXCaV10GBlqE5thqgMz0hgzcLidCRBq+nEo9KiFspsRWOsRrk4sQKM3UQqOYRIKfFFO3XBnUo4Yg==",
       "path": "automapper.extensions.microsoft.dependencyinjection/6.1.0",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.6.1.0.nupkg.sha512"
+    },
+    "GeekBurger.Ingredients.Contract/1.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nEOOf4YLcrI0IbFaGOi2g0z6cd4PwcQJvEE3t2Jl6qTfSg6GdUkb+KMxIvNBvwfle9OaZHBbxmGLzoOSkPK3lQ==",
+      "path": "geekburger.ingredients.contract/1.0.0",
+      "hashPath": "geekburger.ingredients.contract.1.0.0.nupkg.sha512"
     },
     "Libuv/1.10.0": {
       "type": "package",

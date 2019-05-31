@@ -1,4 +1,6 @@
-﻿using GeekBurguer.LabelLoader.Web.Application.Interface;
+﻿using GeekBurger.Ingredients.Contract.Request;
+using GeekBurger.Ingredients.Contract.Response;
+using GeekBurguer.LabelLoader.Web.Application.Interface;
 using GeekBurguer.LabelLoader.Web.Application.Interface.Api;
 using GeekBurguer.LabelLoader.Web.Application.Request.Api;
 using Microsoft.Extensions.Configuration;
@@ -65,10 +67,12 @@ namespace GeekBurguer.LabelLoader.Web.Application.Service
 
             var wordsSplitByComma = wordsJoint.Split(',').ToList();
 
-            var request = new CreateIngredientsRequest
+            var request = new IngredientsToUpsert
             {
-                ItemName = "Item Name"
+                //TODO: Confirmar se precisa enviar o ID
+                ProductId = 1
             };
+
 
             //Ingredients
             wordsSplitByComma.Distinct().ToList()

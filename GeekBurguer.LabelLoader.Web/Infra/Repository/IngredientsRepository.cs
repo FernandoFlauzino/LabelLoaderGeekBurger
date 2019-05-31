@@ -1,4 +1,5 @@
-﻿using GeekBurguer.LabelLoader.Web.Application.Interface.Api;
+﻿using GeekBurger.Ingredients.Contract.Response;
+using GeekBurguer.LabelLoader.Web.Application.Interface.Api;
 using GeekBurguer.LabelLoader.Web.Application.Request.Api;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ namespace GeekBurguer.LabelLoader.Web.Infra.Repository
         {
             config = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
         }
-        public async Task<bool> CreateIngredients(CreateIngredientsRequest request)
+        public async Task<bool> CreateIngredients(IngredientsToUpsert request)
         {
             var urlApi = config["API:IngredientsUrl"];
 
