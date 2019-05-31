@@ -79,7 +79,7 @@ namespace GeekBurguer.LabelLoader.Web.Application.Service
                     request.Ingredients.Add(text);
             });
 
-            //chamar a api que vai inserir os igredientes
+            //chamar a api que vai inserir os ingredientes
             var result = await _ingredientsRepository.CreateIngredients(request);
 
             if (result)
