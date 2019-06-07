@@ -38,8 +38,10 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             _ingredientsRepository = ingredientsRepository;
         }
 
-        public async Task<bool> ReadImageVisonService(string pathImage)
+        public async Task<bool> ReadImageVisonService(string base64EncodedData)
         {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            var pathImage = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
 
             if (string.IsNullOrEmpty(pathImage))
             {

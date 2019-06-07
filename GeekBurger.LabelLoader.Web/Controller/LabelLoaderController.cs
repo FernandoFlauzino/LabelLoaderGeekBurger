@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using GeekBurger.LabelLoader.Web.Application.Interface;
 using GeekBurger.LabelLoader.Web.Application.Request;
@@ -32,7 +33,8 @@ namespace GeekBurger.LabelLoader.Web.Controller
             }
             catch(Exception ex)
             {
-                return BadRequest();
+                
+                return  StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
     }
