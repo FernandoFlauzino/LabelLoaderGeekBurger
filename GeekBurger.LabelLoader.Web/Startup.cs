@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using GeekBurger.LabelLoader.Web.Application.Interface;
+﻿using GeekBurger.LabelLoader.Web.Application.Interface;
 using GeekBurger.LabelLoader.Web.Application.Interface.Api;
 using GeekBurger.LabelLoader.Web.Application.Service;
 using GeekBurger.LabelLoader.Web.Infra.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace GeekBurger.LabelLoader.Web
@@ -32,7 +25,7 @@ namespace GeekBurger.LabelLoader.Web
                 });
             });
 
-            services.AddDirectoryBrowser();
+            //services.AddDirectoryBrowser();
 
             services.AddScoped<IIngredientsRepository, IngredientsRepository>();
             services.AddScoped<ILabelLoaderService, LabelLoaderService>();
@@ -46,20 +39,6 @@ namespace GeekBurger.LabelLoader.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseStaticFiles(); // For the wwwroot folder
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images"))
-            });
-
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images"))
-            });
 
             app.UseMvc();
             app.UseSwagger();

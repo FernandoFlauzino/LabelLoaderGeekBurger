@@ -38,10 +38,12 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             _ingredientsRepository = ingredientsRepository;
         }
 
-        public async Task<bool> ReadImageVisonService(string pathImage)
+        public async Task<bool> ReadImageVisonService(string base64EncodedData)
         {
+            //var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            //var pathImage = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
 
-            if (string.IsNullOrEmpty(pathImage))
+            if (string.IsNullOrEmpty(base64EncodedData))
             {
                 return await Task.FromResult(false);
             }
@@ -50,10 +52,17 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
 
             var visionServiceClient = new VisionServiceClient(_configuration["VisionAPIKey"], _configuration["VisionUrl"]);
 
-            using (Stream imageFileStream = File.OpenRead(pathImage))
+            var name = File.ReadAllBytes(base64EncodedData);
+
+            using (Stream imageFileStream = new MemoryStream(name))
             {
                 results = visionServiceClient.RecognizeTextAsync(imageFileStream).Result;
             }
+
+            //using (Stream imageFileStream = File.OpenRead(pathImage))
+            //{
+            //    results = visionServiceClient.RecognizeTextAsync(imageFileStream).Result;
+            //}
 
             var lines = results.Regions.SelectMany(region => region.Lines);
             var words = lines.SelectMany(line => line.Words);
