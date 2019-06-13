@@ -4,13 +4,18 @@ using GeekBurger.LabelLoader.Web.Application.Service;
 using GeekBurger.LabelLoader.Web.Infra.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using System.IO;
 
 namespace GeekBurger.LabelLoader.Web
 {
     public class Startup
     {
+
+
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -25,10 +30,15 @@ namespace GeekBurger.LabelLoader.Web
                 });
             });
 
-            //services.AddDirectoryBrowser();
+            var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json");
+            IConfiguration configuration = builder.Build();
 
+            services.AddSingleton<IConfiguration>(configuration);
             services.AddScoped<IIngredientsRepository, IngredientsRepository>();
             services.AddScoped<ILabelLoaderService, LabelLoaderService>();
+            services.AddSingleton<ILogService, LogService>();
 
         }
 
