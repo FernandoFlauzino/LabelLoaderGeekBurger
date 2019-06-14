@@ -54,8 +54,10 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             var visionServiceClient = new VisionServiceClient(_configuration["API:VisionAPIKey"], _configuration["API:VisionUrl"]);
 
             var imageByte = DownloadImageFromHttp(base64EncodedData);
+            var memStream = new MemoryStream(imageByte);
+            memStream.Seek(0, SeekOrigin.Begin);
 
-            results = visionServiceClient.RecognizeTextAsync(Convert.ToBase64String(imageByte)).Result;
+            results = visionServiceClient.RecognizeTextAsync(memStream).Result;
 
             var lines = results.Regions.SelectMany(region => region.Lines);
             var words = lines.SelectMany(line => line.Words);
