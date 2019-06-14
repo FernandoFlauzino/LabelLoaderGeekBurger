@@ -28,8 +28,7 @@ namespace GeekBurger.LabelLoader.Web.Controller
         {
             try
             {
-                var url = @"https://functionburgera06d.blob.core.windows.net/processar-new/download.png";
-                var result = _labelLoaderService.ReadImageVisonService(url).Result;
+                var result = _labelLoaderService.ReadImageVisonService(request.PathImage).Result;
                 //var result = _labelLoaderService.ReadImageVisonService(request.PathImage).Result;
                 return Ok(result);
             }
