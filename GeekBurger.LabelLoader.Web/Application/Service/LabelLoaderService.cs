@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace GeekBurger.LabelLoader.Web.Application.Service
@@ -50,19 +51,11 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
 
             OcrResults results;
 
-            var visionServiceClient = new VisionServiceClient(_configuration["VisionAPIKey"], _configuration["VisionUrl"]);
+            var visionServiceClient = new VisionServiceClient(_configuration["API:VisionAPIKey"], _configuration["API:VisionUrl"]);
 
-            var name = File.ReadAllBytes(base64EncodedData);
+            var imageByte = DownloadImageFromHttp(base64EncodedData);
 
-            using (Stream imageFileStream = new MemoryStream(name))
-            {
-                results = visionServiceClient.RecognizeTextAsync(imageFileStream).Result;
-            }
-
-            //using (Stream imageFileStream = File.OpenRead(pathImage))
-            //{
-            //    results = visionServiceClient.RecognizeTextAsync(imageFileStream).Result;
-            //}
+            results = visionServiceClient.RecognizeTextAsync(Convert.ToBase64String(imageByte)).Result;
 
             var lines = results.Regions.SelectMany(region => region.Lines);
             var words = lines.SelectMany(line => line.Words);
@@ -104,7 +97,17 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             }
 
             return await Task.FromResult(result);
+        }
 
+        public byte[] DownloadImageFromHttp(string url)
+        {
+            byte[] image;
+            using (WebClient client = new WebClient())
+            {
+                image = client.DownloadData(new Uri(url, UriKind.Absolute));
+            }
+
+            return image;
         }
     }
 }
