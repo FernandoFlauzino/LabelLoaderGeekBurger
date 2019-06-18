@@ -77,7 +77,7 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             var request = new IngredientsToUpsert
             {
                 //TODO: Confirmar se precisa enviar o ID
-                ProductId = 1
+                ProductId = Guid.NewGuid()
             };
 
 
