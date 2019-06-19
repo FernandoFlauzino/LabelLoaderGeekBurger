@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
+using AutoMapper;
+using System;
 
 namespace GeekBurger.LabelLoader.Web
 {
@@ -39,6 +41,8 @@ namespace GeekBurger.LabelLoader.Web
             services.AddScoped<IIngredientsRepository, IngredientsRepository>();
             services.AddScoped<ILabelLoaderService, LabelLoaderService>();
             services.AddSingleton<ILogService, LogService>();
+            services.AddScoped<ILababelLoaderChangedService, LabelLoaderChangedService>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         }
 

@@ -6,11 +6,13 @@ using GeekBurger.LabelLoader.Web.Application.Request.Api;
 using Microsoft.Extensions.Configuration;
 using Microsoft.ProjectOxford.Vision;
 using Microsoft.ProjectOxford.Vision.Contract;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GeekBurger.LabelLoader.Web.Application.Service
@@ -31,24 +33,19 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
         private const string Exit = "exit";
         private readonly IConfiguration _configuration;
         private readonly IIngredientsRepository _ingredientsRepository;
+        private readonly ILababelLoaderChangedService _lababelLoaderChangedService;
+
 
         public LabelLoaderService(IConfiguration configuration,
-            IIngredientsRepository ingredientsRepository)
+            IIngredientsRepository ingredientsRepository, ILababelLoaderChangedService lababelLoaderChangedService)
         {
             _configuration = configuration;
             _ingredientsRepository = ingredientsRepository;
+            _lababelLoaderChangedService = lababelLoaderChangedService;
         }
 
-        public async Task<bool> ReadImageVisonService(string base64EncodedData)
+        public async void ReadImageVisonService(string base64EncodedData)
         {
-            //var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
-            //var pathImage = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
-
-            if (string.IsNullOrEmpty(base64EncodedData))
-            {
-                return await Task.FromResult(false);
-            }
-
             OcrResults results;
 
             var visionServiceClient = new VisionServiceClient(_configuration["API:VisionAPIKey"], _configuration["API:VisionUrl"]);
@@ -77,9 +74,9 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             var request = new IngredientsToUpsert
             {
                 //TODO: Confirmar se precisa enviar o ID
-                ProductId = 1
+                ProductId = new Guid(),
+                Ingredients = new List<string>()
             };
-
 
             //Ingredients
             wordsSplitByComma.Distinct().ToList()
@@ -90,15 +87,10 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
                     request.Ingredients.Add(text);
             });
 
-            //chamar a api que vai inserir os ingredientes
-            var result = await _ingredientsRepository.CreateIngredients(request);
+            _lababelLoaderChangedService
+                .AddToMessageList(request);
 
-            if (result)
-            {
-                //TODO: incluir tratamento para renomear o arquivo
-            }
-
-            return await Task.FromResult(result);
+            _lababelLoaderChangedService.SendMessagesAsync();
         }
 
         public byte[] DownloadImageFromHttp(string url)
@@ -110,6 +102,11 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             }
 
             return image;
+        }
+
+        public void Save()
+        {
+            
         }
     }
 }
