@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using GeekBurger.LabelLoader.Web.Application.Interface;
+﻿using GeekBurger.LabelLoader.Web.Application.Interface;
 using GeekBurger.LabelLoader.Web.Application.Request;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net;
 
 namespace GeekBurger.LabelLoader.Web.Controller
 {
@@ -22,21 +17,21 @@ namespace GeekBurger.LabelLoader.Web.Controller
             _labelLoaderService = labelLoaderService;
         }
 
- 
+
         [HttpPost]
         public IActionResult ReadImage([FromBody] ReadRequest request)
         {
             try
             {
-                var photo = @"https://functionburgera06d.blob.core.windows.net/processar-new/download.png";
-                _labelLoaderService.ReadImageVisonService(photo);
-                //var result = _labelLoaderService.ReadImageVisonService(request.PathImage).Result;
+                request.PathImage = @"https://functionburgera06d.blob.core.windows.net/processar-new/download.png";
+                _labelLoaderService.ReadImageVisonService(request.PathImage);
+
                 return Ok();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                
-                return  StatusCode((int)HttpStatusCode.InternalServerError);
+
+                return StatusCode((int)HttpStatusCode.InternalServerError);
             }
         }
     }
