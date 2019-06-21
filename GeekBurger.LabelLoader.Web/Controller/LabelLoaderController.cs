@@ -28,9 +28,10 @@ namespace GeekBurger.LabelLoader.Web.Controller
         {
             try
             {
-                var result = _labelLoaderService.ReadImageVisonService(request.PathImage).Result;
+                var photo = @"https://functionburgera06d.blob.core.windows.net/processar-new/download.png";
+                _labelLoaderService.ReadImageVisonService(photo);
                 //var result = _labelLoaderService.ReadImageVisonService(request.PathImage).Result;
-                return Ok(result);
+                return Ok();
             }
             catch(Exception ex)
             {

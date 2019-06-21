@@ -8,6 +8,6 @@ namespace GeekBurger.LabelLoader.Web.Application.Interface
 {
     public interface ILabelLoaderService
     {
-        Task<bool> ReadImageVisonService(string base64EncodedData);
+        void ReadImageVisonService(string base64EncodedData);
     }
 }
