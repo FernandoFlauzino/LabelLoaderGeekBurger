@@ -39,13 +39,18 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             _lababelLoaderChangedService = lababelLoaderChangedService;
         }
 
-        public void ReadImageVisonService(string base64EncodedData)
+        /// <summary>
+        /// Faz a leitura dos ingredientes na imagem e 
+        /// envia para a fila 
+        /// </summary>
+        /// <param name="pathImage"></param>
+        public void ReadImageVisonService(string pathImage)
         {
             OcrResults results;
 
             var visionServiceClient = new VisionServiceClient(_configuration["API:VisionAPIKey"], _configuration["API:VisionUrl"]);
 
-            var imageByte = DownloadImageFromHttp(base64EncodedData);
+            var imageByte = DownloadImageFromHttp(pathImage);
             var memStream = new MemoryStream(imageByte);
             memStream.Seek(0, SeekOrigin.Begin);
 
@@ -68,12 +73,10 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
 
             var request = new IngredientsToUpsert
             {
-                //TODO: Confirmar se precisa enviar o ID
                 ProductId = Guid.NewGuid(),
                 Ingredients = new List<string>()
             };
 
-            //Ingredients
             wordsSplitByComma.Distinct().ToList()
             .ForEach(wordText =>
             {
