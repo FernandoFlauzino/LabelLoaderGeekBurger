@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using GeekBurger.Ingredients.Contract.Response;
+using GeekBurger.LabelLoader.Web.Application.Interface;
+using GeekBurger.LabelLoader.Web.Extension;
+using GeekBurger.LabelLoader.Web.Models;
 using Microsoft.Azure.Management.ServiceBus.Fluent;
 using Microsoft.Azure.ServiceBus;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -11,11 +13,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using GeekBurger.LabelLoader.Web.Application.Interface;
-using GeekBurger.LabelLoader.Web.Extension;
-using GeekBurger.Ingredients.Contract.Response;
-using GeekBurger.LabelLoader.Web.Models;
 
 namespace GeekBurger.LabelLoader.Web.Application.Service
 {

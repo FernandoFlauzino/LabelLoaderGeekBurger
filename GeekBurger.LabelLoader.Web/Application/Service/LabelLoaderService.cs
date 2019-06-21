@@ -1,19 +1,14 @@
-﻿using GeekBurger.Ingredients.Contract.Request;
-using GeekBurger.Ingredients.Contract.Response;
+﻿using GeekBurger.Ingredients.Contract.Response;
 using GeekBurger.LabelLoader.Web.Application.Interface;
 using GeekBurger.LabelLoader.Web.Application.Interface.Api;
-using GeekBurger.LabelLoader.Web.Application.Request.Api;
 using Microsoft.Extensions.Configuration;
 using Microsoft.ProjectOxford.Vision;
 using Microsoft.ProjectOxford.Vision.Contract;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeekBurger.LabelLoader.Web.Application.Service
 {
@@ -44,7 +39,7 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             _lababelLoaderChangedService = lababelLoaderChangedService;
         }
 
-        public async void ReadImageVisonService(string base64EncodedData)
+        public void ReadImageVisonService(string base64EncodedData)
         {
             OcrResults results;
 
@@ -54,7 +49,7 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             var memStream = new MemoryStream(imageByte);
             memStream.Seek(0, SeekOrigin.Begin);
 
-            results = visionServiceClient.RecognizeTextAsync(memStream).Result;
+            results =  visionServiceClient.RecognizeTextAsync(memStream).Result;
 
             var lines = results.Regions.SelectMany(region => region.Lines);
             var words = lines.SelectMany(line => line.Words);
@@ -74,7 +69,7 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             var request = new IngredientsToUpsert
             {
                 //TODO: Confirmar se precisa enviar o ID
-                ProductId = new Guid(),
+                ProductId = Guid.NewGuid(),
                 Ingredients = new List<string>()
             };
 
@@ -102,11 +97,6 @@ namespace GeekBurger.LabelLoader.Web.Application.Service
             }
 
             return image;
-        }
-
-        public void Save()
-        {
-            
         }
     }
 }
