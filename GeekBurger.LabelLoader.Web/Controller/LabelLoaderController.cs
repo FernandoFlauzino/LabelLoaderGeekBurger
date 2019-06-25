@@ -23,7 +23,8 @@ namespace GeekBurger.LabelLoader.Web.Controller
         {
             try
             {
-                request.PathImage = @"https://functionburgera06d.blob.core.windows.net/processar-new/download.png";
+                //Imagem para teste
+                //request.PathImage = @"https://functionburgera06d.blob.core.windows.net/processar-new/download.png";
                 _labelLoaderService.ReadImageVisonService(request.PathImage);
 
                 return Ok();
