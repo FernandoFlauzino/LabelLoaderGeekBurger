@@ -17,7 +17,7 @@
     <PackageReference Include="AutoMapper" Version="8.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
     <PackageReference Include="GeekBurger.Ingredients.Contract" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.9" />
     <PackageReference Include="Microsoft.Azure.Management.ServiceBus.Fluent" Version="1.22.2" />
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.4.0" />
     <PackageReference Include="Microsoft.ProjectOxford.Vision.DotNetCore" Version="1.1.0" />
